@@ -1,0 +1,3 @@
+config:
+    db_path: /Users/sst/Desktop/test
+    emergency_path: /Users/sst/Downloads
