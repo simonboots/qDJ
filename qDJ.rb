@@ -1,3 +1,4 @@
+#!/usr/bin/ruby
 # ==Synopsis
 #
 # qDJ: A basic queueing tool
@@ -51,6 +52,7 @@ class QDJ
     @pwd = Pathname.new(".").realpath
     File.open(@scriptpath + '/qDJconfig.yaml') { |yf| @config = YAML::load(yf)['config'] }
     @dbh = FSDB::Database.new(@config['db_path'])
+    @dbh[QDB] ||= []
   end
 
   def enqueue(file)
@@ -151,11 +153,10 @@ opts = GetoptLong.new(
 
 dj = QDJ.new
 
-if opts.length == 0
-  RDoc::usage('usage')
-end
+option_available = false
 
 opts.each do |opt, arg|
+  option_available = true
   case opt
     
   when '--help'
@@ -190,3 +191,5 @@ opts.each do |opt, arg|
     dj.randomize
   end
 end
+
+RDoc::usage('usage') unless option_available
